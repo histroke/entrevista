@@ -3,396 +3,1632 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Harold — Backend Developer Interview</title>
+
+<title>Harold — Backend Developer</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --ink:#0F2B2C;
-    --ink-2:#173C3D;
-    --paper:#F4F1E8;
-    --gold:#D9A441;
-    --gold-dim:#8A6A2A;
-    --sage:#8FB996;
-    --sage-dim:#3F6B4B;
-    --line: rgba(244,241,232,0.14);
-    --line-strong: rgba(244,241,232,0.28);
+
+:root{
+  --ink:#0F2B2C;
+  --ink2:#173C3D;
+  --paper:#F4F1E8;
+  --gold:#D9A441;
+  --gold-light:#F0C66A;
+  --sage:#8FB996;
+  --blue:#6EA8C7;
+  --red:#E2725B;
+  --muted:rgba(244,241,232,.62);
+  --line:rgba(244,241,232,.15);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:'IBM Plex Sans',sans-serif;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  min-height:100vh;
+  padding:25px 15px;
+}
+
+/* =========================
+   MAIN DECK
+========================= */
+
+.deck{
+  width:100%;
+  max-width:1050px;
+}
+
+/* TOP BAR */
+
+.topbar{
+  height:48px;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 18px;
+
+  background:var(--ink2);
+
+  border:1px solid rgba(244,241,232,.25);
+  border-bottom:none;
+
+  border-radius:12px 12px 0 0;
+}
+
+.dots{
+  display:flex;
+  gap:7px;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.filename{
+  margin-left:14px;
+
+  font-family:'IBM Plex Mono',monospace;
+
+  font-size:12px;
+
+  color:var(--muted);
+}
+
+/* =========================
+   STAGE
+========================= */
+
+.stage{
+  position:relative;
+
+  min-height:560px;
+
+  padding:45px 55px;
+
+  background:var(--ink2);
+
+  border:1px solid rgba(244,241,232,.25);
+  border-top:none;
+
+  border-radius:0 0 12px 12px;
+
+  overflow:hidden;
+}
+
+/* Decorative circles */
+
+.stage::before{
+  content:"";
+
+  position:absolute;
+
+  width:250px;
+  height:250px;
+
+  border-radius:50%;
+
+  background:rgba(217,164,65,.035);
+
+  right:-100px;
+  top:-100px;
+}
+
+.stage::after{
+  content:"";
+
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
+
+  background:rgba(143,185,150,.035);
+
+  left:-100px;
+  bottom:-100px;
+}
+
+/* =========================
+   SLIDES
+========================= */
+
+.slide{
+  display:none;
+
+  position:relative;
+  z-index:2;
+
+  animation:appear .35s ease;
+}
+
+.slide.active{
+  display:block;
+}
+
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:translateY(8px);
   }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================
+   TEXT
+========================= */
+
+.kicker{
+  font-family:'IBM Plex Mono',monospace;
+
+  color:var(--gold);
+
+  font-size:13px;
+
+  margin:0 0 7px;
+}
+
+h1{
+  margin:0 0 12px;
+
+  font-size:38px;
+
+  line-height:1.15;
+
+  font-weight:700;
+}
+
+.subtitle{
+  color:var(--muted);
+
+  font-size:16px;
+
+  margin-bottom:30px;
+}
+
+/* =========================
+   VISUAL GRID
+========================= */
+
+.visual-grid{
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:18px;
+
+  margin-top:25px;
+}
+
+.card{
+  min-height:150px;
+
+  background:rgba(244,241,232,.045);
+
+  border:1px solid var(--line);
+
+  border-radius:12px;
+
+  padding:20px;
+
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+
+  border-color:rgba(217,164,65,.4);
+}
+
+.icon{
+  width:52px;
+  height:52px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:rgba(217,164,65,.12);
+
+  color:var(--gold);
+
+  font-size:27px;
+
+  margin-bottom:15px;
+}
+
+.card h3{
+  margin:0 0 7px;
+
+  font-size:16px;
+}
+
+.card p{
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.5;
+}
+
+/* =========================
+   BIG VISUAL
+========================= */
+
+.visual{
+  display:flex;
+
+  justify-content:center;
+  align-items:center;
+
+  min-height:230px;
+
+  margin:20px 0;
+}
+
+/* =========================
+   BACKEND DIAGRAM
+========================= */
+
+.backend-diagram{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:15px;
+
+  width:100%;
+}
+
+.diagram-box{
+  width:150px;
+  height:130px;
+
+  border-radius:14px;
+
+  border:1px solid var(--line);
+
+  background:rgba(244,241,232,.05);
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+}
+
+.diagram-icon{
+  font-size:38px;
+
+  margin-bottom:8px;
+}
+
+.diagram-box span{
+  font-family:'IBM Plex Mono',monospace;
+
+  font-size:12px;
+
+  color:var(--muted);
+}
+
+.arrow{
+  color:var(--gold);
+
+  font-size:28px;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile{
+  display:flex;
+
+  align-items:center;
+
+  gap:45px;
+
+  margin-top:25px;
+}
+
+.avatar{
+  flex-shrink:0;
+
+  width:170px;
+  height:170px;
+
+  border-radius:50%;
+
+  border:3px solid var(--gold);
+
+  background:
+    radial-gradient(circle at 50% 35%, #D9A441 0 19%, transparent 20%),
+    radial-gradient(circle at 50% 70%, #8FB996 0 31%, transparent 32%),
+    rgba(244,241,232,.05);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:55px;
+}
+
+.profile-info{
+  flex:1;
+}
+
+.profile-info h2{
+  margin:0 0 12px;
+
+  color:var(--sage);
+
+  font-size:20px;
+}
+
+.profile-info p{
+  color:var(--muted);
+
+  line-height:1.6;
+
+  margin:0;
+}
+
+/* TAGS */
+
+.tags{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:20px;
+}
+
+.tag{
+  padding:8px 13px;
+
+  border-radius:6px;
+
+  font-family:'IBM Plex Mono',monospace;
+
+  font-size:12px;
+
+  color:var(--gold);
+
+  background:rgba(217,164,65,.1);
+
+  border:1px solid rgba(217,164,65,.25);
+}
+
+.tag.green{
+  color:var(--sage);
+
+  background:rgba(143,185,150,.1);
+
+  border-color:rgba(143,185,150,.25);
+}
+
+.tag.blue{
+  color:var(--blue);
+
+  background:rgba(110,168,199,.1);
+
+  border-color:rgba(110,168,199,.25);
+}
+
+/* =========================
+   SAFESTART
+========================= */
+
+.safestart{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:14px;
+
+  margin:35px 0;
+}
+
+.safe-box{
+  width:145px;
+  height:115px;
+
+  border-radius:14px;
+
+  border:1px solid var(--line);
+
+  background:rgba(244,241,232,.05);
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+}
+
+.safe-icon{
+  font-size:32px;
+
+  margin-bottom:8px;
+}
+
+.safe-box strong{
+  font-size:14px;
+}
+
+.safe-box small{
+  color:var(--muted);
+
+  font-size:11px;
+
+  margin-top:4px;
+}
+
+.safe-arrow{
+  color:var(--gold);
+
+  font-size:25px;
+}
+
+/* KEYWORDS */
+
+.keyword-row{
+  display:flex;
+
+  justify-content:center;
+
+  gap:14px;
+
+  flex-wrap:wrap;
+
+  margin-top:25px;
+}
+
+.keyword{
+  padding:10px 17px;
+
+  border-radius:7px;
+
+  background:rgba(143,185,150,.1);
+
+  border:1px solid rgba(143,185,150,.3);
+
+  color:var(--sage);
+
+  font-family:'IBM Plex Mono',monospace;
+
+  font-size:13px;
+}
+
+/* =========================
+   INTERVIEW
+========================= */
+
+.interview-grid{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:16px;
+
+  margin-top:25px;
+}
+
+.question{
+  padding:18px;
+
+  border-radius:12px;
+
+  background:rgba(244,241,232,.045);
+
+  border:1px solid var(--line);
+}
+
+.question .q{
+  font-family:'IBM Plex Mono',monospace;
+
+  color:var(--sage);
+
+  font-size:12px;
+
+  margin-bottom:10px;
+}
+
+.question .answer{
+  font-size:15px;
+
+  color:var(--paper);
+
+  font-weight:500;
+}
+
+.answer span{
+  color:var(--gold);
+}
+
+/* =========================
+   FINAL SLIDE
+========================= */
+
+.final{
+  text-align:center;
+
+  padding-top:15px;
+}
+
+.final-icon{
+  width:130px;
+  height:130px;
+
+  margin:10px auto 25px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:65px;
+
+  background:rgba(217,164,65,.1);
+
+  border:2px solid var(--gold);
+}
+
+.final h1{
+  font-size:40px;
+}
+
+.final-message{
+  max-width:650px;
+
+  margin:0 auto;
+
+  color:var(--muted);
+
+  font-size:17px;
+
+  line-height:1.6;
+}
+
+.survival{
+  display:flex;
+
+  justify-content:center;
+
+  gap:12px;
+
+  flex-wrap:wrap;
+
+  margin-top:30px;
+}
+
+.phrase{
+  padding:13px 17px;
+
+  background:rgba(244,241,232,.05);
+
+  border:1px solid var(--line);
+
+  border-radius:8px;
+
+  font-family:'IBM Plex Mono',monospace;
+
+  font-size:12px;
+
+  color:var(--gold-light);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  width:100%;
+  max-width:1050px;
+
+  margin-top:18px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+}
+
+.progress{
+  display:flex;
+
+  gap:8px;
+}
+
+.pdot{
+  width:8px;
+  height:8px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:rgba(244,241,232,.22);
+
+  cursor:pointer;
+
+  padding:0;
+}
+
+.pdot.on{
+  width:25px;
+
+  border-radius:5px;
+
+  background:var(--gold);
+}
+
+.navbtns{
+  display:flex;
+
+  gap:10px;
+}
+
+button.nav{
+  padding:9px 18px;
+
+  border-radius:7px;
+
+  border:1px solid rgba(244,241,232,.25);
+
+  background:transparent;
+
+  color:var(--paper);
+
+  font-family:'IBM Plex Sans',sans-serif;
+
+  cursor:pointer;
+}
+
+button.nav:hover{
+  background:rgba(244,241,232,.08);
+}
+
+button.nav.primary{
+  background:var(--gold);
+
+  color:#241902;
+
+  border-color:var(--gold);
+}
+
+button.nav:disabled{
+  opacity:.3;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
   body{
-    margin:0;
-    background:var(--ink);
-    color:var(--paper);
-    font-family:'IBM Plex Sans', sans-serif;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    padding:32px 16px;
+    padding:10px;
   }
-  .deck{
-    width:100%;
-    max-width:860px;
-  }
-  .tabbar{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--ink-2);
-    border:1px solid var(--line-strong);
-    border-bottom:none;
-    border-radius:10px 10px 0 0;
-    padding:12px 18px;
-  }
-  .dot{width:10px;height:10px;border-radius:50%;background:rgba(244,241,232,0.2);}
-  .filename{
-    margin-left:6px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px;
-    color:rgba(244,241,232,0.55);
-    letter-spacing:0.2px;
-  }
+
   .stage{
-    position:relative;
-    background:var(--ink-2);
-    border:1px solid var(--line-strong);
-    border-top:none;
-    border-radius:0 0 10px 10px;
-    min-height:520px;
-    padding:44px 48px 40px;
-    overflow:hidden;
+    padding:30px 22px;
+
+    min-height:620px;
   }
-  .slide{
-    display:none;
-    animation:fadeIn 0.4s ease;
-  }
-  .slide.active{display:block;}
-  @keyframes fadeIn{
-    from{opacity:0; transform:translateY(6px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .kicker{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px;
-    color:var(--gold);
-    letter-spacing:0.3px;
-    margin:0 0 6px;
-  }
+
   h1{
-    font-size:28px;
-    font-weight:600;
-    margin:0 0 22px;
-    line-height:1.25;
-    color:var(--paper);
-    border-bottom:1px solid var(--line);
-    padding-bottom:18px;
+    font-size:27px;
   }
-  h2.sub{
-    font-size:16px;
-    font-weight:500;
-    color:var(--sage);
-    margin:26px 0 10px;
+
+  .visual-grid{
+    grid-template-columns:1fr;
   }
-  p{
-    font-size:15.5px;
-    line-height:1.7;
-    color:rgba(244,241,232,0.88);
-    margin:0 0 12px;
+
+  .card{
+    min-height:105px;
   }
-  .quote{
-    border-left:3px solid var(--gold);
-    padding:2px 0 2px 16px;
-    margin:14px 0;
-    font-style:italic;
-    color:rgba(244,241,232,0.92);
-  }
-  ul.plain{
-    margin:0 0 14px;
-    padding-left:20px;
-  }
-  ul.plain li{
-    font-size:15px;
-    line-height:1.75;
-    color:rgba(244,241,232,0.85);
-    margin-bottom:6px;
-  }
-  .tags{
-    display:flex;
+
+  .backend-diagram,
+  .safestart{
     flex-wrap:wrap;
-    gap:8px;
-    margin:8px 0 18px;
   }
-  .tag{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px;
-    padding:5px 10px;
-    border-radius:5px;
-    background:rgba(217,164,65,0.14);
-    color:var(--gold);
-    border:1px solid rgba(217,164,65,0.3);
+
+  .diagram-box,
+  .safe-box{
+    width:110px;
   }
-  .tag.sage{
-    background:rgba(143,185,150,0.14);
-    color:var(--sage);
-    border:1px solid rgba(143,185,150,0.32);
+
+  .arrow,
+  .safe-arrow{
+    font-size:20px;
   }
-  .qa{
-    background:rgba(244,241,232,0.04);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:14px 16px;
-    margin-bottom:12px;
+
+  .profile{
+    flex-direction:column;
+
+    gap:20px;
+
+    text-align:center;
   }
-  .qa .q{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px;
-    color:var(--sage);
-    margin-bottom:6px;
+
+  .avatar{
+    width:120px;
+    height:120px;
   }
-  .qa .a{
-    font-size:14.5px;
-    color:rgba(244,241,232,0.9);
-    line-height:1.65;
+
+  .interview-grid{
+    grid-template-columns:1fr;
   }
+
   .footer{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    max-width:860px;
-    width:100%;
-    margin-top:22px;
+    padding:0 5px;
   }
-  .progress{
-    display:flex;
-    gap:8px;
-  }
-  .pdot{
-    width:8px;height:8px;border-radius:50%;
-    background:rgba(244,241,232,0.2);
-    cursor:pointer;
-    border:none;
-    padding:0;
-  }
-  .pdot.on{background:var(--gold); width:22px; border-radius:5px;}
-  .navbtns{display:flex; gap:10px;}
-  button.nav{
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:14px;
-    font-weight:500;
-    background:transparent;
-    color:var(--paper);
-    border:1px solid var(--line-strong);
-    border-radius:7px;
-    padding:9px 18px;
-    cursor:pointer;
-    transition:background 0.15s ease, opacity 0.15s ease;
-  }
-  button.nav:hover{background:rgba(244,241,232,0.08);}
-  button.nav:disabled{opacity:0.3; cursor:default;}
-  button.nav.primary{
-    background:var(--gold);
-    color:#241902;
-    border:1px solid var(--gold);
-  }
-  button.nav.primary:hover{background:#e2b258;}
-  @media (max-width:600px){
-    .stage{padding:30px 22px 30px;}
-    h1{font-size:22px;}
-  }
+
+}
+
 </style>
 </head>
+
+
 <body>
 
 <div class="deck">
-  <div class="tabbar">
-    <div class="dot" style="background:#e2725b;"></div>
-    <div class="dot" style="background:#e2b258;"></div>
-    <div class="dot" style="background:#8fb996;"></div>
-    <span class="filename">final_project_interview.md</span>
+
+  <!-- TOP BAR -->
+
+  <div class="topbar">
+
+    <div class="dots">
+
+      <div class="dot" style="background:#e2725b"></div>
+
+      <div class="dot" style="background:#e2b258"></div>
+
+      <div class="dot" style="background:#8fb996"></div>
+
+    </div>
+
+    <span class="filename">
+      backend_interview_presentation.html
+    </span>
+
   </div>
+
 
   <div class="stage">
 
-    <!-- SLIDE 1 — PART 1: JOB POSITION -->
-    <section class="slide active" data-idx="0">
-      <p class="kicker">part 1 — job position</p>
-      <h1>Applying for: Junior Backend Developer</h1>
 
-      <p>Hello, my name is Harold. I am currently studying software analysis and development, and I am applying for the position of <strong style="font-weight:500;color:var(--gold);">Junior Backend Developer</strong>.</p>
+    <!-- =================================================
+         SLIDE 1
+    ================================================== -->
 
-      <h2 class="sub">What this role does</h2>
-      <p>A backend developer builds and maintains the server-side logic of an application: databases, APIs, authentication, and the systems that connect the front end to real data.</p>
+    <section class="slide active">
 
-      <h2 class="sub">Why I chose it</h2>
-      <p>I enjoy solving logical problems and building systems that work reliably behind the scenes. I am more motivated by structure and logic than by visual design, so backend development fits how I think.</p>
+      <p class="kicker">
+        PART 1 — JOB POSITION
+      </p>
 
-      <h2 class="sub">Type of projects for this position</h2>
-      <ul class="plain">
-        <li>REST APIs that connect a database to a web or mobile app</li>
-        <li>User authentication and data validation systems</li>
-        <li>Database design for real-world applications with social impact</li>
-      </ul>
+      <h1>
+        Junior Backend Developer
+      </h1>
+
+      <p class="subtitle">
+        Who I am • What I do • Why backend
+      </p>
+
+
+      <div class="visual">
+
+        <div class="backend-diagram">
+
+          <div class="diagram-box">
+
+            <div class="diagram-icon">💻</div>
+
+            <strong>Frontend</strong>
+
+            <span>User interface</span>
+
+          </div>
+
+
+          <div class="arrow">
+            →
+          </div>
+
+
+          <div class="diagram-box">
+
+            <div class="diagram-icon">⚙️</div>
+
+            <strong>Backend</strong>
+
+            <span>Logic + API</span>
+
+          </div>
+
+
+          <div class="arrow">
+            →
+          </div>
+
+
+          <div class="diagram-box">
+
+            <div class="diagram-icon">🗄️</div>
+
+            <strong>Database</strong>
+
+            <span>Real data</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="visual-grid">
+
+        <div class="card">
+
+          <div class="icon">
+            🧠
+          </div>
+
+          <h3>
+            Why?
+          </h3>
+
+          <p>
+            Logic & problem solving
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="icon">
+            ⚡
+          </div>
+
+          <h3>
+            Focus
+          </h3>
+
+          <p>
+            Structure & reliability
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="icon">
+            🌎
+          </div>
+
+          <h3>
+            Projects
+          </h3>
+
+          <p>
+            APIs • Auth • Databases
+          </p>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <!-- SLIDE 2 — PART 2: PROFESSIONAL PROFILE -->
-    <section class="slide" data-idx="1">
-      <p class="kicker">part 2 — professional profile</p>
-      <h1>Professional profile</h1>
 
-      <div class="quote">
-        "Hello, my name is Harold. I am studying software analysis and development, and I am applying for the position of Junior Backend Developer. My main skills are mathematical logic, creativity, and responsibility. I have experience working with both frontend and backend, including database design with MongoDB. I consider myself creative, responsible, and good at working in a team, and my strengths are logical thinking and fast, accurate typing. My professional goal is to keep developing my skills and, eventually, start my own company."
+
+    <!-- =================================================
+         SLIDE 2
+    ================================================== -->
+
+    <section class="slide">
+
+      <p class="kicker">
+        PART 2 — PROFESSIONAL PROFILE
+      </p>
+
+      <h1>
+        Who am I?
+      </h1>
+
+      <p class="subtitle">
+        Skills • Technologies • Strengths • Goal
+      </p>
+
+
+      <div class="profile">
+
+        <div class="avatar">
+          👨‍💻
+        </div>
+
+
+        <div class="profile-info">
+
+          <h2>
+            Harold — Software Analysis & Development
+          </h2>
+
+          <p>
+            Creative • Responsible • Team player
+          </p>
+
+
+          <div class="tags">
+
+            <span class="tag">
+              JavaScript
+            </span>
+
+            <span class="tag">
+              Java
+            </span>
+
+            <span class="tag">
+              HTML
+            </span>
+
+            <span class="tag">
+              CSS
+            </span>
+
+            <span class="tag">
+              Git
+            </span>
+
+            <span class="tag">
+              MongoDB
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <h2 class="sub">Tools and technologies</h2>
-      <div class="tags">
-        <span class="tag">JavaScript</span>
-        <span class="tag">Java</span>
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">Git</span>
-        <span class="tag">MongoDB</span>
+
+      <div class="visual-grid">
+
+        <div class="card">
+
+          <div class="icon">
+            🧠
+          </div>
+
+          <h3>
+            Strength
+          </h3>
+
+          <p>
+            Logical thinking
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="icon">
+            ⌨️
+          </div>
+
+          <h3>
+            Skill
+          </h3>
+
+          <p>
+            Fast & accurate typing
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="icon">
+            🚀
+          </div>
+
+          <h3>
+            Goal
+          </h3>
+
+          <p>
+            Grow → Own company
+          </p>
+
+        </div>
+
       </div>
 
-      <h2 class="sub">Strengths</h2>
-      <ul class="plain">
-        <li>Logical thinking and problem solving</li>
-        <li>Fast and accurate typing</li>
-        <li>Responsibility and attention to detail</li>
-      </ul>
     </section>
 
-    <!-- SLIDE 3 — PART 3: PORTFOLIO -->
-    <section class="slide" data-idx="2">
-      <p class="kicker">part 3 — portfolio project</p>
-      <h1>SafeStart: a teen pregnancy prevention platform</h1>
-      <div class="tags">
-        <span class="tag sage">social impact</span>
-        <span class="tag">backend / API</span>
+
+
+    <!-- =================================================
+         SLIDE 3
+    ================================================== -->
+
+    <section class="slide">
+
+      <p class="kicker">
+        PART 3 — PORTFOLIO PROJECT
+      </p>
+
+      <h1>
+        SafeStart
+      </h1>
+
+      <p class="subtitle">
+        Teen pregnancy prevention platform
+      </p>
+
+
+      <div class="safestart">
+
+        <div class="safe-box">
+
+          <div class="safe-icon">
+            👤
+          </div>
+
+          <strong>
+            Teenagers
+          </strong>
+
+          <small>
+            Private access
+          </small>
+
+        </div>
+
+
+        <div class="safe-arrow">
+          →
+        </div>
+
+
+        <div class="safe-box">
+
+          <div class="safe-icon">
+            🔐
+          </div>
+
+          <strong>
+            SafeStart
+          </strong>
+
+          <small>
+            Secure platform
+          </small>
+
+        </div>
+
+
+        <div class="safe-arrow">
+          →
+        </div>
+
+
+        <div class="safe-box">
+
+          <div class="safe-icon">
+            🩺
+          </div>
+
+          <strong>
+            Counselor
+          </strong>
+
+          <small>
+            Confidential
+          </small>
+
+        </div>
+
       </div>
 
-      <h2 class="sub">1. What is it?</h2>
-      <p>SafeStart is a web platform I built to support a local teen pregnancy prevention program. I was responsible for the backend: the API, the database, and the logic that connects everything.</p>
 
-      <h2 class="sub">2. What was the purpose?</h2>
-      <p>The purpose was to give teenagers a private, reliable way to access sexual health information, book confidential appointments with a counselor, and ask anonymous questions without fear of judgment.</p>
+      <div class="keyword-row">
 
-      <h2 class="sub">3. What did you do?</h2>
-      <ul class="plain">
-        <li>Designed the database in MongoDB to store users, appointments, and anonymous questions</li>
-        <li>Built REST API endpoints for registration, login, and appointment scheduling</li>
-        <li>Created an anonymous Q&A endpoint that never stores identifying information</li>
-        <li>Implemented data validation and basic security rules</li>
-      </ul>
+        <div class="keyword">
+          MongoDB
+        </div>
 
-      <h2 class="sub">4. What tools did you use?</h2>
-      <p>I used JavaScript with Node.js for the server logic, MongoDB for the database, and Git for version control. The frontend team used the API I built to display the content.</p>
+        <div class="keyword">
+          Node.js
+        </div>
 
-      <h2 class="sub">5. What was challenging?</h2>
-      <p>The main challenge was protecting user privacy while still allowing appointment tracking. I solved this by separating identity data from the anonymous question data, so no question could ever be linked back to a specific user.</p>
+        <div class="keyword">
+          REST API
+        </div>
 
-      <h2 class="sub">6. Why is it relevant?</h2>
-      <p>This project shows that I can build a secure, responsible backend system for sensitive real-world data, which is exactly the kind of judgment a backend developer needs.</p>
+        <div class="keyword">
+          Git
+        </div>
+
+      </div>
+
+
+      <div class="visual-grid">
+
+        <div class="card">
+
+          <div class="icon">
+            🗄️
+          </div>
+
+          <h3>
+            Database
+          </h3>
+
+          <p>
+            Users • Appointments • Questions
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="icon">
+            🔑
+          </div>
+
+          <h3>
+            API
+          </h3>
+
+          <p>
+            Login • Registration • Scheduling
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="icon">
+            🛡️
+          </div>
+
+          <h3>
+            Challenge
+          </h3>
+
+          <p>
+            Privacy → Separate identity data
+          </p>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <!-- SLIDE 4 — PART 4: JOB INTERVIEW -->
-    <section class="slide" data-idx="3">
-      <p class="kicker">part 4 — job interview practice</p>
-      <h1>Sample interview answers</h1>
 
-      <div class="qa">
-        <p class="q">Q: What is your strongest technical skill?</p>
-        <p class="a">I would say my strongest skill is logical problem-solving. I use it every day when I design database structures or debug an API.</p>
+
+    <!-- =================================================
+         SLIDE 4
+    ================================================== -->
+
+    <section class="slide">
+
+      <p class="kicker">
+        PART 4 — JOB INTERVIEW
+      </p>
+
+      <h1>
+        Interview Practice
+      </h1>
+
+      <p class="subtitle">
+        Remember the idea — don't memorize every word
+      </p>
+
+
+      <div class="interview-grid">
+
+
+        <div class="question">
+
+          <div class="q">
+            Q1 — STRONGEST SKILL?
+          </div>
+
+          <div class="answer">
+            <span>Logical</span> problem-solving
+          </div>
+
+        </div>
+
+
+        <div class="question">
+
+          <div class="q">
+            Q2 — PROJECT?
+          </div>
+
+          <div class="answer">
+            <span>SafeStart</span> → Backend + API
+          </div>
+
+        </div>
+
+
+        <div class="question">
+
+          <div class="q">
+            Q3 — MOST DIFFICULT?
+          </div>
+
+          <div class="answer">
+            <span>Privacy</span> → Separate data
+          </div>
+
+        </div>
+
+
+        <div class="question">
+
+          <div class="q">
+            Q4 — TEAM OR ALONE?
+          </div>
+
+          <div class="answer">
+            <span>Teamwork</span> → Combine skills
+          </div>
+
+        </div>
+
+
       </div>
 
-      <div class="qa">
-        <p class="q">Q: Can you tell me about one of your projects?</p>
-        <p class="a">Sure. I built the backend for SafeStart, a platform that supports a teen pregnancy prevention program. I designed the database and built the API that handles appointments and anonymous questions.</p>
+
+      <div class="visual">
+
+        <div style="
+          text-align:center;
+          font-size:75px;
+        ">
+          🧠 + 🤝 + 💻
+        </div>
+
       </div>
 
-      <div class="qa">
-        <p class="q">Q: What was the most difficult part?</p>
-        <p class="a">The main challenge was protecting user privacy. I solved this by keeping identity data completely separate from the anonymous questions in the database.</p>
+
+      <div class="keyword-row">
+
+        <div class="keyword">
+          LOGIC
+        </div>
+
+        <div class="keyword">
+          SAFESTART
+        </div>
+
+        <div class="keyword">
+          PRIVACY
+        </div>
+
+        <div class="keyword">
+          TEAMWORK
+        </div>
+
       </div>
 
-      <div class="qa">
-        <p class="q">Q: Do you prefer working independently or in a team? Why?</p>
-        <p class="a">I enjoy working in a team, because I can focus on the backend while others handle the design, and we combine our skills to build something better together.</p>
-      </div>
     </section>
 
-    <!-- SLIDE 5 — PART 5: UNEXPECTED QUESTION -->
-    <section class="slide" data-idx="4">
-      <p class="kicker">part 5 — the unexpected question</p>
-      <h1>Why should we hire you?</h1>
 
-      <p>Let me think for a moment.</p>
 
-      <div class="quote">
-        "You should hire me because I combine logical thinking with responsibility. In my SafeStart project, I didn't just write code, I made a decision to protect user privacy because I understood the real people behind the data. I am still learning, but I am honest about what I know, and I am motivated to keep growing as a backend developer."
+    <!-- =================================================
+         SLIDE 5
+    ================================================== -->
+
+    <section class="slide">
+
+      <div class="final">
+
+        <p class="kicker">
+          PART 5 — UNEXPECTED QUESTION
+        </p>
+
+
+        <div class="final-icon">
+          🎯
+        </div>
+
+
+        <h1>
+          Why should we hire you?
+        </h1>
+
+
+        <p class="final-message">
+
+          <strong style="color:var(--gold)">
+            Logic + Responsibility + Growth
+          </strong>
+
+          <br><br>
+
+          SafeStart → I protected user privacy.
+
+          <br>
+
+          I understand the people behind the data.
+
+          <br>
+
+          I'm still learning, but I'm motivated to grow.
+
+        </p>
+
+
+        <div class="survival">
+
+          <div class="phrase">
+            "Let me think for a moment."
+          </div>
+
+          <div class="phrase">
+            "I would say that..."
+          </div>
+
+          <div class="phrase">
+            "Thank you for the question."
+          </div>
+
+        </div>
+
       </div>
 
-      <h2 class="sub">Survival phrases used here</h2>
-      <ul class="plain">
-        <li>"Let me think for a moment" — buys a second to organize ideas</li>
-        <li>"I would say that..." — softens a confident claim</li>
-        <li>"Thank you for the question" — closes politely</li>
-      </ul>
     </section>
+
 
   </div>
+
 </div>
+
+
+
+<!-- FOOTER -->
 
 <div class="footer">
+
   <div class="progress" id="progress"></div>
+
+
   <div class="navbtns">
-    <button class="nav" id="prevBtn">Previous</button>
-    <button class="nav primary" id="nextBtn">Next</button>
+
+    <button
+      class="nav"
+      id="prevBtn"
+    >
+      ← Previous
+    </button>
+
+
+    <button
+      class="nav primary"
+      id="nextBtn"
+    >
+      Next →
+    </button>
+
   </div>
+
 </div>
 
+
+
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const total = slides.length;
-  let current = 0;
 
-  const progressEl = document.getElementById('progress');
-  for(let i=0;i<total;i++){
-    const b = document.createElement('button');
-    b.className = 'pdot' + (i===0 ? ' on' : '');
-    b.setAttribute('aria-label', 'Go to slide ' + (i+1));
-    b.addEventListener('click', () => { current = i; render(); });
-    progressEl.appendChild(b);
-  }
+const slides = document.querySelectorAll('.slide');
 
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
+const total = slides.length;
 
-  function render(){
-    slides.forEach((s, i) => s.classList.toggle('active', i === current));
-    document.querySelectorAll('.pdot').forEach((d, i) => d.classList.toggle('on', i === current));
-    prevBtn.disabled = current === 0;
-    nextBtn.textContent = current === total - 1 ? 'Restart' : 'Next';
-  }
+let current = 0;
 
-  prevBtn.addEventListener('click', () => {
-    if(current > 0){ current--; render(); }
+
+const progress =
+  document.getElementById('progress');
+
+
+/* CREATE PROGRESS DOTS */
+
+for(let i = 0; i < total; i++){
+
+  const button =
+    document.createElement('button');
+
+  button.className =
+    'pdot' + (i === 0 ? ' on' : '');
+
+  button.setAttribute(
+    'aria-label',
+    'Go to slide ' + (i + 1)
+  );
+
+  button.addEventListener(
+    'click',
+    () => {
+
+      current = i;
+
+      render();
+
+    }
+  );
+
+  progress.appendChild(button);
+
+}
+
+
+const prevBtn =
+  document.getElementById('prevBtn');
+
+const nextBtn =
+  document.getElementById('nextBtn');
+
+
+/* RENDER */
+
+function render(){
+
+  slides.forEach((slide, i) => {
+
+    slide.classList.toggle(
+      'active',
+      i === current
+    );
+
   });
 
-  nextBtn.addEventListener('click', () => {
-    if(current === total - 1){ current = 0; }
-    else { current++; }
+
+  document
+    .querySelectorAll('.pdot')
+    .forEach((dot, i) => {
+
+      dot.classList.toggle(
+        'on',
+        i === current
+      );
+
+    });
+
+
+  prevBtn.disabled =
+    current === 0;
+
+
+  nextBtn.textContent =
+    current === total - 1
+      ? 'Restart ↻'
+      : 'Next →';
+
+}
+
+
+/* PREVIOUS */
+
+prevBtn.addEventListener(
+  'click',
+  () => {
+
+    if(current > 0){
+
+      current--;
+
+      render();
+
+    }
+
+  }
+);
+
+
+/* NEXT */
+
+nextBtn.addEventListener(
+  'click',
+  () => {
+
+    if(current === total - 1){
+
+      current = 0;
+
+    }else{
+
+      current++;
+
+    }
+
     render();
-  });
 
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'ArrowRight') nextBtn.click();
-    if(e.key === 'ArrowLeft') prevBtn.click();
-  });
+  }
+);
 
-  render();
+
+/* KEYBOARD */
+
+document.addEventListener(
+  'keydown',
+  (e) => {
+
+    if(e.key === 'ArrowRight'){
+
+      nextBtn.click();
+
+    }
+
+    if(e.key === 'ArrowLeft'){
+
+      prevBtn.click();
+
+    }
+
+  }
+);
+
+
+/* START */
+
+render();
+
 </script>
 
 </body>
